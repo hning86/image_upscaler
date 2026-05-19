@@ -33,6 +33,7 @@ function init() {
     const zoomInBtn = document.getElementById('zoom-in-btn');
     const zoomResetBtn = document.getElementById('zoom-reset-btn');
     const zoomLevelText = document.getElementById('zoom-level-text');
+    const sampleCards = document.querySelectorAll('.sample-card');
 
     let activeFile = null;
     let upscaledImageBlobUrl = null;
@@ -105,6 +106,48 @@ function init() {
         resetUploadState();
     });
 
+    // --- Sample Image Selection Logic ---
+    sampleCards.forEach(card => {
+        card.addEventListener('click', async () => {
+            const sampleName = card.dataset.sample;
+            
+            // Visually highlight the active sample card
+            sampleCards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            
+            // Set loading state for the preview
+            dropZonePrompt.style.display = 'none';
+            filePreviewContainer.style.display = 'flex';
+            fileNameSpan.textContent = `Loading ${sampleName}...`;
+            fileSizeSpan.textContent = 'Sample image';
+            localPreview.src = `samples/${sampleName}.jpg`; // Set visual preview immediately
+
+            try {
+                const response = await fetch(`samples/${sampleName}.jpg`);
+                if (!response.ok) throw new Error('Could not load sample.');
+                const blob = await response.blob();
+                
+                // Create file-like object
+                const file = new File([blob], `${sampleName}.jpg`, { type: 'image/jpeg' });
+                
+                // Set standard active file
+                activeFile = file;
+                
+                // Programmatically update the file input so the browser validation passes
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                
+                // Update final display sizes & preview
+                fileNameSpan.textContent = file.name;
+                fileSizeSpan.textContent = formatBytes(file.size);
+            } catch (err) {
+                showErrorDialog(`Failed to load sample: ${err.message}`);
+                resetUploadState();
+            }
+        });
+    });
+
     function handleSelectedFile(file) {
         // Validation: type check (allow-list)
         const allowedExtensions = ['.png', '.jpg', '.jpeg'];
@@ -122,6 +165,7 @@ function init() {
         }
 
         activeFile = file;
+        sampleCards.forEach(c => c.classList.remove('active')); // clear any active samples if user uploaded custom image
         fileNameSpan.textContent = file.name;
         fileSizeSpan.textContent = formatBytes(file.size);
 
@@ -138,6 +182,7 @@ function init() {
     function resetUploadState() {
         activeFile = null;
         fileInput.value = '';
+        sampleCards.forEach(c => c.classList.remove('active')); // clear sample highlights
         localPreview.removeAttribute('src');
         fileNameSpan.textContent = '';
         fileSizeSpan.textContent = '';
