@@ -31,8 +31,12 @@ Here is the clean, flat, light-mode dashboard displaying a zoomed-in and panned 
 
 ```text
 .
+├── .dockerignore          # Docker build exclusions
 ├── .env                   # Local environment configuration
+├── .gitignore             # Git build exclusions
 ├── README.md              # Project documentation (this file)
+├── Dockerfile             # Container recipe for Cloud Run deployment
+├── deploy.sh              # GCP Cloud Run automated deployment script
 ├── pyproject.toml         # Package configuration and dependencies
 ├── assets/
 │   └── screenshot.png     # App preview screenshot for documentation
