@@ -60,4 +60,4 @@ def run_upscale(image_path: str, model: str, scale_factor: str) -> tuple[bytes, 
     upscaled_bytes = output_image_obj.image_bytes
     mime_type = output_image_obj.mime_type or "image/png"
     
-    return upcaled_bytes, mime_type
+    return upscaled_bytes, mime_type
