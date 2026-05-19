@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # Load local environment variables from .env file
 load_dotenv(override=True)
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
@@ -154,6 +154,10 @@ async def upscale_image(
                 os.remove(input_file_path)
             except Exception:
                 pass
+
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse(os.path.join(os.path.dirname(__file__), 'static', 'favicon.png'))
 
 # Serve Static Frontend Web Pages
 app.mount("/", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static"), html=True), name="static")
