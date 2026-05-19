@@ -141,3 +141,20 @@ chmod +x deploy.sh
 2. Submits your local directory to **Google Cloud Build** to create a secure container image remotely using the [Dockerfile](Dockerfile) (meaning you do *not* need to have Docker running locally).
 3. Automatically deploys the container image to **Google Cloud Run**, enabling public unauthenticated routing, and binding port parameters dynamically.
 4. Configures all Vertex AI `PROJECT_ID` and `LOCATION` parameters securely at runtime.
+
+### 3. Accessing Secured/Private Cloud Run Services (gcloud proxy)
+If your organization has policies that restrict public unauthenticated access to Cloud Run (throwing a warning like `Setting IAM policy failed... do not belong to a permitted customer`), the service will be private and secure by default. 
+
+To access the live container in your browser without making it public, you can tunnel dynamically using the local `gcloud run services proxy` server.
+
+Run this command in your terminal:
+```bash
+gcloud run services proxy imagen-upscaler --region=us-central1
+```
+
+**What it does:**
+1. Starts a secure local server proxy at `http://localhost:8080` (or another port printed in your terminal).
+2. Automatically injects your active local `gcloud` authentication tokens into all request headers in real-time.
+3. Forwards the traffic securely to your Cloud Run container in the cloud, allowing you to run and interact with your remote upscaler securely directly at:
+   [http://localhost:8080](http://localhost:8080)
+
