@@ -1,19 +1,27 @@
-# Imagen Ultra Upscaler
+# Image Upscaler
 
-A premium, secure single-page web application built with FastAPI and Vanilla CSS/JS to enhance and upscale images using the Vertex AI **Imagen 4.0 Upscale Preview** and **Imagen 3.0 Generate** models via the Google GenAI SDK.
+A clean, secure single-page web application built with FastAPI and Vanilla CSS/JS to enhance and upscale images using the Vertex AI **Imagen 4.0 Upscale** and **Imagen 3.0** models via the Google GenAI SDK.
+
+## Preview & Dashboard Layout
+
+Here is the clean, flat, light-mode dashboard displaying a zoomed-in and panned image with the real-time interactive before/after comparison slider:
+
+![Image Upscaler Dashboard](assets/screenshot.png)
 
 ---
 
 ## Key Features
 
-- **Premium Glassmorphism UI**: Designed with high-end dark aesthetics, Outfit typography, custom grid layouts, subtle gradients, and micro-animations.
+- **Flat Minimalist UI**: Designed with clean modern light HSL color tokens, Outfit typography, and compact layout structures without complex gradients or tacky 3D box-shadows.
+- **Zoom & Pan Inspector**: Supports real-time mouse drag panning and 100%–400% zooming inside the viewer, maintaining pixel-perfect split coordinates automatically.
 - **Interactive Slider**: Real-time, draggable before/after comparison slider for inspecting enhanced image details side-by-side.
 - **Flexible Models**: Supports upscaling via the state-of-the-art `imagen-4.0-upscale-preview` (best quality) and `imagen-3.0-generate-002` (balanced performance).
 - **Resolution Scaling**: Offers double ($2\times$) and quadruple ($4\times$) resolution upscaling.
-- **Production-Ready Security**:
+- **Production-Ready Security & Integrity**:
   - **Strict File Sanitization**: Restricts uploaded formats exclusively to JPG, JPEG, and PNG.
   - **Magic Byte Verification**: Inspects image structure via Pillow's integrity checks before sending payloads to Vertex AI APIs.
   - **Size Restrictions**: Enforces a maximum limit of 10MB on uploaded images.
+  - **Detailed Error Parsing**: Captures and explains model pixel limits or GCP permission errors clearly to the user.
   - **Automatic Cleanup**: Deletes intermediate files immediately after processing or upon server error.
   - **Local CORS Protections**: Restricts requests to local host origin to guard against cross-site scripting issues.
 
@@ -26,15 +34,17 @@ A premium, secure single-page web application built with FastAPI and Vanilla CSS
 ├── .env                   # Local environment configuration
 ├── README.md              # Project documentation (this file)
 ├── pyproject.toml         # Package configuration and dependencies
-├── test_upscale.py        # Standalone test script for direct API calls
-└── app
-    ├── __init__.py
-    ├── main.py            # FastAPI Backend (Routes, validations, & Vertex AI client)
-    ├── static/
-    │   ├── index.html     # Single-page dashboard markup
-    │   ├── styles.css     # Tailored HSL styles, glassmorphism, custom widgets
-    │   └── app.js         # Frontend logic, slider behavior, & base64 conversions
-    └── temp_uploads/      # Sandboxed directory for secure temporary file staging
+├── assets/
+│   └── screenshot.png     # App preview screenshot for documentation
+├── app/
+│   ├── __init__.py
+│   ├── main.py            # FastAPI Backend (Routes, validations, & Vertex AI client)
+│   └── static/
+│       ├── index.html     # Single-page dashboard markup
+│       ├── styles.css     # Tailored flat light HSL styles & custom widgets
+│       └── app.js         # Frontend logic, slider, zoom/pan inspector, cache-busting
+└── tests/
+    └── test_upscale.py    # Standalone test script for direct API calls
 ```
 
 ---
@@ -87,11 +97,11 @@ Once Uvicorn starts successfully, open your browser and navigate to:
 
 ## Standalone Command Line Testing
 
-A helper script, `test_upscale.py`, is included to verify your Google GenAI API connectivity and upscaling capability independently of the FastAPI server.
+A helper script, `test_upscale.py`, is included inside the `tests/` directory to verify your Google GenAI API connectivity and upscaling capability independently of the FastAPI server.
 
 Run the script using:
 ```bash
-uv run test_upscale.py
+uv run tests/test_upscale.py
 ```
 
 **What it does:**
