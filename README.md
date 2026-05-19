@@ -38,6 +38,7 @@ Here is the clean, flat, light-mode dashboard displaying a zoomed-in and panned 
 ├── README.md              # Project documentation (this file)
 ├── Dockerfile             # Container recipe for Cloud Run deployment
 ├── deploy.sh              # GCP Cloud Run automated deployment script
+├── run_with_proxy.sh      # Local secure tunnel proxy runner for private Cloud Run
 ├── pyproject.toml         # Package configuration and dependencies
 ├── assets/
 │   └── screenshot.png     # App preview screenshot for documentation
@@ -152,12 +153,11 @@ Execute the deployment script from the root directory:
 ### 3. Accessing the Private Cloud Run Service (gcloud proxy)
 Since unauthenticated access is disabled by default for security, the deployed service is fully private and protected.
 
-To access the live container in your browser securely, you can tunnel dynamically using the local `gcloud run services proxy` server.
-
-Run this command in your terminal:
+To access the live container in your browser securely, you can tunnel dynamically using the provided helper script:
 ```bash
-gcloud run services proxy imagen-upscaler --region=us-central1
+./run_with_proxy.sh
 ```
+*(Alternatively, you can run the gcloud CLI command directly: `gcloud run services proxy imagen-upscaler --region=us-central1`)*
 
 **What it does:**
 1. Starts a secure local server proxy at `http://localhost:8080` (or another port printed in your terminal).
