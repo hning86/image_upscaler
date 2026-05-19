@@ -16,4 +16,5 @@ wheels/
 test_input.png
 test_output.png
 test_output_fallback.png
+man.jpg
 app/temp_uploads/*

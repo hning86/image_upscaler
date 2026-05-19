@@ -38,7 +38,8 @@ Here is the clean, flat, light-mode dashboard displaying a zoomed-in and panned 
 │   └── screenshot.png     # App preview screenshot for documentation
 ├── app/
 │   ├── __init__.py
-│   ├── main.py            # FastAPI Backend (Routes, validations, & Vertex AI client)
+│   ├── main.py            # FastAPI Backend (Routing, validations, and uploads)
+│   ├── upscaler.py        # Vertex AI Image Upscaling Service & Client Setup
 │   └── static/
 │       ├── index.html     # Single-page dashboard markup
 │       ├── styles.css     # Tailored flat light HSL styles & custom widgets
