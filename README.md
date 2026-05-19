@@ -146,13 +146,13 @@ Execute the deployment script from the root directory:
 **What the script does:**
 1. Dynamically resolves your active GCP `PROJECT_ID` and region context.
 2. Submits your local directory to **Google Cloud Build** to create a secure container image remotely using the [Dockerfile](Dockerfile) (meaning you do *not* need to have Docker running locally).
-3. Automatically deploys the container image to **Google Cloud Run**, enabling public unauthenticated routing, and binding port parameters dynamically.
+3. Automatically deploys the container image to **Google Cloud Run** as a fully secured private service (`--no-allow-unauthenticated`) with port parameters bound dynamically.
 4. Configures all Vertex AI `PROJECT_ID` and `LOCATION` parameters securely at runtime.
 
-### 3. Accessing Secured/Private Cloud Run Services (gcloud proxy)
-If your organization has policies that restrict public unauthenticated access to Cloud Run (throwing a warning like `Setting IAM policy failed... do not belong to a permitted customer`), the service will be private and secure by default. 
+### 3. Accessing the Private Cloud Run Service (gcloud proxy)
+Since unauthenticated access is disabled by default for security, the deployed service is fully private and protected.
 
-To access the live container in your browser without making it public, you can tunnel dynamically using the local `gcloud run services proxy` server.
+To access the live container in your browser securely, you can tunnel dynamically using the local `gcloud run services proxy` server.
 
 Run this command in your terminal:
 ```bash

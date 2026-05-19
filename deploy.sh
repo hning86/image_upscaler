@@ -45,7 +45,7 @@ gcloud run deploy "$SERVICE_NAME" \
   --platform managed \
   --region "$REGION" \
   --set-env-vars PROJECT_ID="$PROJECT_ID",LOCATION="$REGION" \
-  --allow-unauthenticated
+  --no-allow-unauthenticated
 
 echo "===================================================="
 echo "Deployment successfully completed!"
