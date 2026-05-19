@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upscaler - Premium AI Enhancement</title>
+    <meta name="description"
+        content="Enhance and upscale your images using Gemini's advanced Imagen upscaling models. Experience clean flat styling and real-time interactive before/after image comparison.">
+    <!-- Font selection for high-end aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="logo-container">
+            <div class="logo-icon"></div>
+            <h1>Image <span class="gradient-text">Upscaler</span></h1>
+        </div>
+        <p class="subtitle">Enhance low-resolution assets with state-of-the-art Imagen Generative AI</p>
+    </header>
+
+    <main class="app-container">
+        <section class="control-panel card">
+            <h2 class="section-title">1. Configure Upscaling</h2>
+            <form id="upscale-form" class="upscale-form">
+                <div class="form-group">
+                    <label for="model-select">Select Model</label>
+                    <div class="select-wrapper">
+                        <select id="model-select" name="model" required>
+                            <option value="imagen-4.0-upscale-preview" selected>Imagen 4.0 Upscale</option>
+                            <option value="imagen-3.0-generate-002">Imagen 3.0</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upscale Factor</label>
+                    <div class="radio-group">
+                        <label class="radio-card">
+                            <input type="radio" name="scale" value="x2" checked>
+                            <span class="radio-label-custom">
+                                <span class="factor-title">2x</span>
+                                <span class="factor-desc">Double res.</span>
+                            </span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="scale" value="x4">
+                            <span class="radio-label-custom">
+                                <span class="factor-title">4x</span>
+                                <span class="factor-desc">Quadruple res.</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Image</label>
+                    <div id="drop-zone" class="drop-zone">
+                        <input type="file" id="file-input" name="image" accept=".png,.jpg,.jpeg" required
+                            style="display: none;">
+                        <div class="drop-zone-prompt">
+                            <div class="upload-icon"></div>
+                            <p class="upload-text">Drag & drop your image here or <span class="browse-link">browse
+                                    files</span></p>
+                            <p class="upload-limit">PNG, JPG or JPEG (Max 10MB)</p>
+                        </div>
+                        <div id="file-preview-container" class="file-preview-container" style="display: none;">
+                            <img id="local-preview" class="local-preview" alt="Source preview">
+                            <div class="file-meta">
+                                <span id="file-name" class="file-name">image.png</span>
+                                <span id="file-size" class="file-size">0 KB</span>
+                            </div>
+                            <button type="button" id="remove-file-btn" class="btn-close"
+                                aria-label="Remove file">×</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn-primary">
+                    <span class="btn-text">Enhance Image</span>
+                    <span class="loader" style="display: none;"></span>
+                </button>
+            </form>
+        </section>
+
+        <section class="viewer-panel card">
+            <div class="viewer-header">
+                <h2 class="section-title">2. Enhancement Preview</h2>
+                <div class="viewer-header-actions">
+                    <div id="zoom-controls" class="zoom-controls" style="display: none;">
+                        <button type="button" id="zoom-out-btn" class="btn-zoom" title="Zoom Out">−</button>
+                        <span id="zoom-level-text" class="zoom-level-text">100%</span>
+                        <button type="button" id="zoom-in-btn" class="btn-zoom" title="Zoom In">+</button>
+                        <button type="button" id="zoom-reset-btn" class="btn-zoom reset" title="Reset Zoom">↺</button>
+                    </div>
+                    <div id="resolution-badge" class="resolution-badge" style="display: none;">
+                        <span id="res-original">--</span> ➜ <span id="res-upscaled" class="gradient-text">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="viewer-content">
+                <!-- Empty state placeholder -->
+                <div id="viewer-placeholder" class="viewer-placeholder">
+                    <div class="placeholder-graphic"></div>
+                    <p>Upload and enhance an image to see results here</p>
+                </div>
+
+                <!-- Processing state -->
+                <div id="processing-state" class="processing-state" style="display: none;">
+                    <div class="spinner-pulse"></div>
+                    <h3>Upscaling with Imagen...</h3>
+                    <p>Enhancing details, refining textures, and denoising. This takes about 5-15 seconds.</p>
+                </div>
+
+                <!-- Interactive slider container -->
+                <div id="slider-container" class="comparison-slider-container" style="display: none;">
+                    <img id="img-original" class="slider-image original-image" alt="Original low-resolution image">
+                    <img id="img-upscaled" class="slider-image upscaled-image" alt="Upscaled high-resolution image">
+                    <div class="slider-bar">
+                        <div class="slider-handle">
+                            <span class="handle-arrow left"></span>
+                            <span class="handle-arrow right"></span>
+                        </div>
+                    </div>
+                    <div class="image-label original-label">Before</div>
+                    <div class="image-label upscaled-label">After</div>
+                </div>
+            </div>
+
+            <div id="viewer-footer" class="viewer-footer" style="display: none;">
+                <button type="button" id="download-btn" class="btn-secondary">
+                    <span class="download-icon"></span> Download Upscaled Image
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer-credit">
+        <p>Built securely using Google GenAI, FastAPI, & Vanilla CSS/JS.</p>
+    </footer>
+
+    <script src="app.js?v=1.0.2"></script>
+</body>
+
+</html>
