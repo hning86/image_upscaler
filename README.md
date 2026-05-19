@@ -76,7 +76,12 @@ The application utilizes the **Vertex AI API** which requires authentication. Be
    ```
    *Note: The backend automatically attempts to fetch credentials via `gcloud auth print-access-token` as a robust fallback.*
 
-3. Configure your `.env` file with your Google Cloud credentials if required.
+3. **Create a `.env` file** in the root directory of the project with your Google Cloud details:
+   ```ini
+   # Vertex AI / Google Cloud Configuration
+   PROJECT_ID=your-google-cloud-project-id
+   LOCATION=us-central1
+   ```
 
 ---
 
