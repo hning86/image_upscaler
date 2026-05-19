@@ -12,6 +12,7 @@ Here is the clean, flat, light-mode dashboard displaying a zoomed-in and panned 
 
 ## Key Features
 
+- **Quick-Test Sample Presets**: Includes 4 curated low-resolution presets (Portrait, Landscape, Street, Macro) programmatically downscaled (to 300x300 px) and compressed. Lets users instantly test and compare upscaling mechanics side-by-side without needing to upload custom files.
 - **Flat Minimalist UI**: Designed with clean modern light HSL color tokens, Outfit typography, and compact layout structures without complex gradients or tacky 3D box-shadows.
 - **Zoom & Pan Inspector**: Supports real-time mouse drag panning and 100%–400% zooming inside the viewer, maintaining pixel-perfect split coordinates automatically.
 - **Interactive Slider**: Real-time, draggable before/after comparison slider for inspecting enhanced image details side-by-side.
@@ -47,7 +48,8 @@ Here is the clean, flat, light-mode dashboard displaying a zoomed-in and panned 
 │   └── static/
 │       ├── index.html     # Single-page dashboard markup
 │       ├── styles.css     # Tailored flat light HSL styles & custom widgets
-│       └── app.js         # Frontend logic, slider, zoom/pan inspector, cache-busting
+│       ├── app.js         # Frontend logic, slider, zoom/pan inspector, cache-busting
+│       └── samples/       # 4 downscaled & compressed JPEG quick-test sample files
 └── tests/
     └── test_upscale.py    # Standalone test script for direct API calls
 ```
@@ -89,10 +91,11 @@ uv sync
 ```
 
 ### 2. Run the Server
-Launch the FastAPI backend with Uvicorn:
+Launch the FastAPI backend using the quick-start shell script:
 ```bash
-uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+./run_local.sh
 ```
+*(Alternatively, you can run uvicorn directly: `uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload`)*
 
 ### 3. View in Browser
 Once Uvicorn starts successfully, open your browser and navigate to:
