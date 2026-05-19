@@ -111,3 +111,29 @@ uv run tests/test_upscale.py
 3. Sends the image to Vertex AI for a $2\times$ upscale enhancement.
 4. Saves the returned upscale artifact as `test_output.png`.
 5. Fallbacks to `imagen-3.0-generate-002` automatically if permissions for the preview model are restricted.
+
+---
+
+## GCP Cloud Run Deployment
+
+You can deploy this application containerized directly to Google Cloud Run using the included deployment script.
+
+### 1. Authenticate with gcloud
+Before deploying, ensure you are authenticated and have targeted your active GCP project:
+```bash
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+```
+
+### 2. Run the Deployment Script
+Make the script executable (if not already) and execute it:
+```bash
+chmod +x deploy.sh
+./deploy.sh
+```
+
+**What the script does:**
+1. Dynamically resolves your active GCP `PROJECT_ID` and region context.
+2. Submits your local directory to **Google Cloud Build** to create a secure container image remotely using the [Dockerfile](Dockerfile) (meaning you do *not* need to have Docker running locally).
+3. Automatically deploys the container image to **Google Cloud Run**, enabling public unauthenticated routing, and binding port parameters dynamically.
+4. Configures all Vertex AI `PROJECT_ID` and `LOCATION` parameters securely at runtime.
